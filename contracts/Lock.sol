@@ -15,11 +15,22 @@ interface IERC20 {
 
 contract ERC20 is IERC20 {
     uint public totalSupply;
+    address public owner;
+    
     mapping(address => uint) public balanceOf;
     mapping(address => mapping(address => uint)) public allowance;
     string public name = "AVATER";
     string public symbol = "AVT";
     uint8 public decimals = 18;
+
+    constructor(){
+        owner = msg.sender;
+    }
+
+    modifier OnlyOwner(){
+        require(msg.sender == owner, "Not the owner");
+        _;
+    }
 
     function transfer(address recipient, uint amount) external returns (bool) {
         balanceOf[msg.sender] -= amount;
